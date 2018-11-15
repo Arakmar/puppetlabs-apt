@@ -27,6 +27,7 @@ class apt::params {
   $pins           = {}
   $settings       = {}
   $auth_conf_entries = []
+  $manage_dirmngr = true
 
   $config_files = {
     'conf'   => {

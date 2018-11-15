@@ -137,6 +137,7 @@ class apt (
   String $preferences_d         = $apt::params::preferences_d,
   Hash $config_files            = $apt::params::config_files,
   Hash $source_key_defaults     = $apt::params::source_key_defaults,
+  Boolean $manage_dirmngr       = $apt::params::manage_dirmngr,
 ) inherits apt::params {
 
   if $facts['osfamily'] != 'Debian' {
@@ -289,7 +290,10 @@ class apt (
   if $pins {
     create_resources('apt::pin', $pins)
   }
+  
+  if $manage_dirmngr {
+    # required for adding GPG keys on Debian 9 (and derivatives)
+    ensure_packages(['dirmngr'])
 
-  # required for adding GPG keys on Debian 9 (and derivatives)
-  ensure_packages(['dirmngr'])
+  }
 }
