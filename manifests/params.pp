@@ -31,6 +31,7 @@ class apt::params {
   $settings             = {}
   $manage_auth_conf     = true
   $auth_conf_entries    = []
+  $manage_gnupg = true
 
   $config_files = {
     'conf'   => {

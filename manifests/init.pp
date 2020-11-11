@@ -154,6 +154,7 @@ class apt (
   String $apt_conf_d            = $apt::params::apt_conf_d,
   Hash $config_files            = $apt::params::config_files,
   Boolean $sources_list_force   = $apt::params::sources_list_force,
+  Boolean $manage_gnupg         = $apt::params::manage_gnupg,
 
   Hash $source_key_defaults = {
     'server'  => $keyserver,
@@ -161,7 +162,6 @@ class apt (
     'content' => undef,
     'source'  => undef,
   }
-
 ) inherits apt::params {
 
   if $facts['os']['family'] != 'Debian' {
@@ -346,6 +346,8 @@ class apt (
     create_resources('apt::pin', $pins)
   }
 
-  # required for adding GPG keys on Debian 9 (and derivatives)
-  ensure_packages(['gnupg'])
+  if $manage_gnupg {
+    # required for adding GPG keys on Debian 9 (and derivatives)
+    ensure_packages(['gnupg'])
+  }
 }
